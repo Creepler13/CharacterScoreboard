@@ -3,6 +3,8 @@ using Assets.Scripts.UI.Panels;
 using CharacterScoreboard;
 using HarmonyLib;
 
+using UnityEngine.UI;
+
 [HarmonyPatch(typeof(PnlRank), "UIRefresh")]
 internal static class UIRefresh_Patch
 {
