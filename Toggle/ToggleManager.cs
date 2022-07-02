@@ -62,7 +62,7 @@ public class ToggleManager
                         if (rank != null) rank.Refresh(true);
                     };
         component4.onValueChanged.AddListener(value);
-        component.text = "CS".ToUpper();
+        component.text = "LCS".ToUpper();
         component.fontSize = 40;
         component.color = rank.refresh.image.color;
         component.transform.localScale = new Vector3(1.2f, 1.45f, 1f);
@@ -75,7 +75,7 @@ public class ToggleManager
 
     public static void SetupDCSToggle()
     {
-        DCSToggle.name = "DCS";
+        DCSToggle.name = "OCS";
         UnityEngine.UI.Text component = DCSToggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
         Image component2 = DCSToggle.transform.Find("Background").GetComponent<Image>();
         Image component3 = DCSToggle.transform.Find("Background").GetChild(0).GetComponent<Image>();
@@ -94,7 +94,7 @@ public class ToggleManager
             if (rank != null) rank.UIRefresh(UIRefresh_Patch.lastUIUpdatedUID);
         };
         component4.onValueChanged.AddListener(value);
-        component.text = "DCS".ToUpper();
+        component.text = "OCS".ToUpper();
         component.fontSize = 40;
         component.color = rank.refresh.image.color;
         component.transform.localScale = new Vector3(1.2f, 1.45f, 1f);
