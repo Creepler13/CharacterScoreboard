@@ -19,8 +19,6 @@ internal class ScoreBoardInit_Patch
             GameObject CharacterScoreboardToggle = UnityEngine.Object.Instantiate<GameObject>(ToggleManager.vSelect.transform.Find("LogoSetting").Find("Toggles").Find("TglOn").gameObject, __instance.transform.parent);
             ToggleManager.Toggle = CharacterScoreboardToggle;
 
-
-
             ToggleManager.SetupCharacterScoreboardToggle();
 
         }
