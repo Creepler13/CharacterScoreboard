@@ -112,7 +112,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Toggle\Refresh_Patch.cs" />
     <Compile Include="Toggle\ScoreBoardInit_Patch.cs" />
     <Compile Include="Toggle\Awake_Patch.cs" />
     <Compile Include="Toggle\ToggleManager.cs" />

@@ -28,6 +28,5 @@ internal class PrefferenceManager
         ToggleCategory.SetFilePath("UserData/CharacterScoreboard.cfg", true);
         CSEnabled_P = ToggleCategory.CreateEntry<bool>("CharacterScoreboard Enabled", false, (string)null, "Whether the CharacterScoreboard is enabled.", false, false, (ValueValidator)null, (string)null);
         DCSEnabled_P = ToggleCategory.CreateEntry<bool>("DCS Enabled", false, (string)null, "Whether the DCS is enabled.", false, false, (ValueValidator)null, (string)null);
-
     }
 }

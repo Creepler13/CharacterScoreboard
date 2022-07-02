@@ -14,6 +14,8 @@ internal static class GetRanks_Patch
     [HarmonyPriority(Priority.First)]
     private static bool Prefix(string musicUid, int difficulty, ref Action<JToken, JToken, int> callback, Action<long, string> failCallback)
     {
+        UIRefresh_Patch.lastUIUpdatedUID = musicUid + "_" + difficulty;
+
 
         p_callback = callback;
 

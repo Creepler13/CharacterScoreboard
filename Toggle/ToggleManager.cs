@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Database;
-using Assets.Scripts.PeroTools.Nice.Events;
+﻿using Assets.Scripts.PeroTools.Nice.Events;
 using Assets.Scripts.PeroTools.Nice.Variables;
 using Assets.Scripts.UI.Panels;
 using UnityEngine;
@@ -58,7 +57,7 @@ public class ToggleManager
         component4.SetIsOnWithoutNotify(PrefferenceManager.CSEnabled);
         System.Action<bool> value = delegate (bool val)
                     {
-                        Refresh_Patch.refreshedAfterChange.Clear();
+                        UIRefresh_Patch.refreshedAfterChange.Clear();
                         PrefferenceManager.CSEnabled = val;
                         if (rank != null) rank.Refresh(true);
                     };
@@ -88,11 +87,11 @@ public class ToggleManager
         DCSToggle.GetComponent<OnActivate>().enabled = false;
         DCSToggle.GetComponent<VariableBehaviour>().enabled = false;
         component4.group = null;
-        component4.SetIsOnWithoutNotify(PrefferenceManager.CSEnabled);
+        component4.SetIsOnWithoutNotify(PrefferenceManager.DCSEnabled);
         System.Action<bool> value = delegate (bool val)
         {
             PrefferenceManager.DCSEnabled = val;
-            if (rank != null) rank.UIRefresh(DataHelper.selectedMusicUid + "_" + DataHelper.selectedDifficulty);
+            if (rank != null) rank.UIRefresh(UIRefresh_Patch.lastUIUpdatedUID);
         };
         component4.onValueChanged.AddListener(value);
         component.text = "DCS".ToUpper();
@@ -103,7 +102,8 @@ public class ToggleManager
         Vector2 offsetMax = val2.offsetMax;
         val2.offsetMax = new Vector2(component.preferredWidth + 10f, offsetMax.y);
         component2.color = rank.refresh.image.color;// new Color(0.235294119f, 8f / 51f, 37f / 85f);
-        component3.color = rank.refresh.image.color; //new Color(0.403921574f, 31f / 85f, 26f / 51f);
+        component3.color = rank.refresh.image.color; //new Color(0
+                                                     //.403921574f, 31f / 85f, 26f / 51f);
     }
 
 }
