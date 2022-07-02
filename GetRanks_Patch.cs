@@ -19,7 +19,7 @@ internal static class GetRanks_Patch
 
         if (!PrefferenceManager.CSEnabled)
         {
-            callback = OverrideNames;
+            //   callback = OverrideNames;
 
             return true;
         }
@@ -111,7 +111,7 @@ internal static class GetRanks_Patch
         return false;
     }
 
-
+    //not used maybe someday
     private static System.Action<JToken, JToken, int> OverrideNames = delegate (JToken a, JToken b, int c)
             {
                 JArray entrys = a.Cast<JArray>();

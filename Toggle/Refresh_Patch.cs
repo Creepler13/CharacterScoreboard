@@ -14,7 +14,7 @@ internal class Refresh_Patch
         if (refreshedAfterChange.ContainsKey(uid)) return true;
 
         if (ToggleManager.rank != null)
-        { 
+        {
             refreshedAfterChange.Add(uid, "yes");
             ToggleManager.rank.RefreshGeneral(uid);
             return false;
