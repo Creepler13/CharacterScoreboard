@@ -112,11 +112,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Toggle\Refresh_Patch.cs" />
     <Compile Include="Toggle\ScoreBoardInit_Patch.cs" />
     <Compile Include="Toggle\Awake_Patch.cs" />
     <Compile Include="Toggle\ToggleManager.cs" />
-    <Compile Include="Toggle\ToggleSave.cs" />
+    <Compile Include="Toggle\PrefferenceManager.cs" />
     <Compile Include="UIRfresh_Patch.cs" />
     <Compile Include="DBUtils.cs" />
     <Compile Include="Registry.cs" />

@@ -14,34 +14,17 @@ internal static class GetRanks_Patch
     [HarmonyPriority(Priority.First)]
     private static bool Prefix(string musicUid, int difficulty, ref Action<JToken, JToken, int> callback, Action<long, string> failCallback)
     {
+        UIRefresh_Patch.lastUIUpdatedUID = musicUid + "_" + difficulty;
+
 
         p_callback = callback;
 
         if (!PrefferenceManager.CSEnabled)
         {
-            System.Action<JToken, JToken, int> test = delegate (JToken a, JToken b, int c)
-            {
-            MelonLoader.MelonLogger.Msg(JsonUtils.Serialize<JToken>(b));
-
-                JObject rankB = a.Cast<JObject>();
-
-                if (rankB.ContainsKey()) { }
-                string nameedit = $"({DBUtils.getCharacterNameByIndex(int.Parse(equip[0]))} & {DBUtils.getElfinNameByIndex(int.Parse(equip[1]))})";   
-
-            if (!((Delegate)(object)p_callback == (Delegate)null))
-                {
-                    p_callback.Invoke(a, b, c);
-                }
-            }
-           ;
-
-
-            callback = test;
+            //   callback = OverrideNames;
 
             return true;
         }
-
-        p_callback = callback;
 
         JObject runs = Registry.getStage(musicUid, difficulty);
 
@@ -129,4 +112,21 @@ internal static class GetRanks_Patch
 
         return false;
     }
+
+    //not used maybe someday
+    private static System.Action<JToken, JToken, int> OverrideNames = delegate (JToken a, JToken b, int c)
+            {
+                JArray entrys = a.Cast<JArray>();
+
+                for (int index = 0; index < entrys.Count; index++)
+                {
+                    string nameedit = $" ({DBUtils.getCharacterNameByIndex(int.Parse((string)entrys[index]["play"]["character_uid"]))} & {DBUtils.getElfinNameByIndex(int.Parse((string)entrys[index]["play"]["elfin_uid"]))})";
+                    entrys[index]["user"]["nickname"] = entrys[index]["user"]["nickname"].ToString() + nameedit;
+                }
+
+                if (!((Delegate)(object)p_callback == (Delegate)null))
+                {
+                    p_callback.Invoke(entrys, b, c);
+                }
+            };
 }
