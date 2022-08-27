@@ -18,6 +18,8 @@ namespace CharacterScoreboard
             return new JObject();
         }
 
+
+
         public static void saveRun(string musicUid, int musicDifficulty, string characterUid, string elfinUid, int score, float acc)
         {
 
@@ -79,6 +81,8 @@ namespace CharacterScoreboard
             loadedCategories.Add(id, chart);
             return chart;
         }
+
+
 
 
     }

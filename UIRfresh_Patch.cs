@@ -18,71 +18,66 @@ internal static class UIRefresh_Patch
     [HarmonyPostfix, HarmonyPriority(Priority.Last)]
     private static void Postfix(PnlRank __instance, string uid)
     {
+
         lastUIUpdatedUID = uid;
 
-        if (!tainted.ContainsKey(uid))
-            scorebaordData[uid] = __instance.scrollView.GetComponentsInChildren<RankCell>();
-
         if (PrefferenceManager.LCSEnabled)
+        {
             upDatedScoreboardLCS(__instance, uid);
-
+            
+        }
         else if (PrefferenceManager.OCSEnabled)
             upDatedScoreboardOCS(__instance, uid);
 
-        else
-        {
-            scorebaordData[uid] = __instance.scrollView.GetComponentsInChildren<RankCell>();
-            if (tainted.ContainsKey(uid))
-            {
-                tainted.Remove(uid);
-            };
-        }
+       
     }
 
     private static void upDatedScoreboardLCS(PnlRank __instance, string uid)
     {
-
-        foreach (RankCell cell in __instance.scrollView.GetComponents<RankCell>())
-        {
-            cell.enabled = false;
-        }
-
+        RankCell[] cells = __instance.scrollView.GetComponentsInChildren<RankCell>();
         JObject runs = Registry.getStage(uid.Split('_')[0], int.Parse(uid.Split('_')[1]));
-
-
-        string[] keys = { };
-
-        foreach (string key in JsonUtils.Keys(runs))
+        Il2CppSystem.Collections.Generic.List<string> keysT = JsonUtils.Keys(runs);
+        Il2CppSystem.Collections.Generic.List<string> keys = new Il2CppSystem.Collections.Generic.List<string>();
+        foreach (string key in keysT)
         {
-            int i;
-            for (i = 0; i < keys.Length; i++)
-                if ((float)runs[key]["play"]["score"] > (float)runs[keys[i]]["play"]["score"])
+            int i = 0;
+            for (i = 0; i < keys.Count; i++)
+            {
+                if ((float)runs[key]["score"] > (float)runs[keysT[i]]["score"])
                     break;
-
-            keys.AddItem(key);
-
+            }
+            keys.Insert(i, key);
         }
 
-
-
-        for (int i = 0; i < keys.Length; i++)
+        for (int index = 0; index < cells.Length; index++)
         {
-            string key = keys[i];
-            JObject run = runs[key].Cast<JObject>();
 
-            RankCell cell = __instance.scrollView.AddComponent<RankCell>();
+            if (index > keys.Count - 1)
+            {
+                cells[index].txtNumber.text = " ";
+                cells[index].txtAcc.text = " ";
+                cells[index].txtPlayerName.text = " ";
+                cells[index].txtScore.text = " ";
+                continue;
+            }
+
+            string key = keys[index];
+
+            JObject run = runs[key].Cast<JObject>();
 
             string name = DBUtils.getCharacterElfinNameByIds(key);
 
-            int score = 0;
-            int.TryParse(runs[key]["score"].ToString(), out score);
+            float acc;
+            if (!float.TryParse(run["acc"].ToString(), out acc))
+                continue;
 
-            float acc = 0;
-            float.TryParse(runs[key]["acc"].ToString(), out acc);
+            int score;
+            if (!int.TryParse(run["score"].ToString(), out score))
+                continue;
 
-            cell.SetValue(i + 1, name, score, acc);
+            cells[index].SetValue(index + 1, name, score, acc / 100);
+
         }
-
 
 
         __instance.txtServerName.text = DBUtils.getCharacterElfinNameByIds(DataHelper.selectedRoleIndex + "&" + DataHelper.selectedElfinIndex);
@@ -119,6 +114,8 @@ internal static class UIRefresh_Patch
                 }
 
         }
+        __instance.txtServerName.text = DBUtils.getCharacterElfinNameByIds(DataHelper.selectedRoleIndex + "&" + DataHelper.selectedElfinIndex);
+
     }
 
 
