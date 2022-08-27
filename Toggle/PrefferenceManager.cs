@@ -6,27 +6,27 @@ internal class PrefferenceManager
 {
     private static MelonPreferences_Category ToggleCategory;
 
-    public static MelonPreferences_Entry<bool> CSEnabled_P;
+    public static MelonPreferences_Entry<bool> LCSEnabled_P;
 
-    public static MelonPreferences_Entry<bool> DCSEnabled_P;
+    public static MelonPreferences_Entry<bool> OCSEnabled_P;
 
-    internal static bool CSEnabled
+    internal static bool LCSEnabled
     {
-        get { return CSEnabled_P.Value; }
-        set { CSEnabled_P.Value = value; }
+        get { return LCSEnabled_P.Value; }
+        set { LCSEnabled_P.Value = value; }
     }
 
-    internal static bool DCSEnabled
+    internal static bool OCSEnabled
     {
-        get { return DCSEnabled_P.Value; }
-        set { DCSEnabled_P.Value = value; }
+        get { return OCSEnabled_P.Value; }
+        set { OCSEnabled_P.Value = value; }
     }
 
     internal static void Load()
     {
         ToggleCategory = MelonPreferences.CreateCategory("Toggle");
         ToggleCategory.SetFilePath("UserData/CharacterScoreboard.cfg", true);
-        CSEnabled_P = ToggleCategory.CreateEntry<bool>("CharacterScoreboard Enabled", false, (string)null, "Whether the CharacterScoreboard is enabled.", false, false, (ValueValidator)null, (string)null);
-        DCSEnabled_P = ToggleCategory.CreateEntry<bool>("DCS Enabled", false, (string)null, "Whether the DCS is enabled.", false, false, (ValueValidator)null, (string)null);
+        LCSEnabled_P = ToggleCategory.CreateEntry<bool>("CharacterScoreboard Enabled", false, (string)null, "Whether the CharacterScoreboard is enabled.", false, false, (ValueValidator)null, (string)null);
+        OCSEnabled_P = ToggleCategory.CreateEntry<bool>("DCS Enabled", false, (string)null, "Whether the DCS is enabled.", false, false, (ValueValidator)null, (string)null);
     }
 }

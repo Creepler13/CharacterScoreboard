@@ -14,12 +14,14 @@ internal static class GetRanks_Patch
     [HarmonyPriority(Priority.First)]
     private static bool Prefix(string musicUid, int difficulty, ref Action<JToken, JToken, int> callback, Action<long, string> failCallback)
     {
-        UIRefresh_Patch.lastUIUpdatedUID = musicUid + "_" + difficulty;
+       
 
+        UIRefresh_Patch.lastUIUpdatedUID = musicUid + "_" + difficulty;
+        return true;
 
         p_callback = callback;
 
-        if (!PrefferenceManager.CSEnabled)
+        if (!PrefferenceManager.LCSEnabled)
         {
             //   callback = OverrideNames;
 
@@ -43,9 +45,7 @@ internal static class GetRanks_Patch
 
             run["user"] = new JObject();
 
-            string[] equip = key.Split("&".ToCharArray());
-
-            string name = DBUtils.getCharacterNameByIndex(int.Parse(equip[0])) + " & " + DBUtils.getElfinNameByIndex(int.Parse(equip[1]));
+            string name = DBUtils.getCharacterElfinNameByIds(key);
 
             run["user"]["nickname"] = name;
 
@@ -73,8 +73,7 @@ internal static class GetRanks_Patch
             rank["detail"]["score"] = 0;
         }
 
-
-        rank["detail"]["nickname"] = DBUtils.getCharacterNameByIndex(DataHelper.selectedRoleIndex) + " & " + DBUtils.getElfinNameByIndex(DataHelper.selectedElfinIndex);
+        rank["detail"]["nickname"] = DBUtils.getCharacterElfinNameByIds(DataHelper.selectedRoleIndex + "&" + DataHelper.selectedElfinIndex);
 
         rank["order"] = null;
         if (runs.ContainsKey(key2))
@@ -89,12 +88,11 @@ internal static class GetRanks_Patch
         val["rank"] = rank;
 
 
-
         JToken val2 = val.GetValue("result");
         JToken val3 = val.GetValue("rank");
 
 
-        System.Action<JToken, JToken, int> value = delegate (JToken a, JToken b, int c)
+        System.Action<JToken, JToken, int> OverrideCallback = delegate (JToken a, JToken b, int c)
         {
             if (!((Delegate)(object)p_callback == (Delegate)null))
             {
@@ -103,7 +101,7 @@ internal static class GetRanks_Patch
         }
        ;
 
-        callback = value;
+        callback = OverrideCallback;
 
         if (!((Delegate)(object)p_callback == (Delegate)null))
         {

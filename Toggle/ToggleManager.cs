@@ -54,12 +54,13 @@ public class ToggleManager
         Toggle.GetComponent<OnActivate>().enabled = false;
         Toggle.GetComponent<VariableBehaviour>().enabled = false;
         component4.group = null;
-        component4.SetIsOnWithoutNotify(PrefferenceManager.CSEnabled);
+        component4.SetIsOnWithoutNotify(PrefferenceManager.LCSEnabled);
         System.Action<bool> value = delegate (bool val)
                     {
-                        UIRefresh_Patch.refreshedAfterChange.Clear();
-                        PrefferenceManager.CSEnabled = val;
-                        if (rank != null) rank.Refresh(true);
+                        // UIRefresh_Patch.refreshedAfterChange.Clear();
+                        PrefferenceManager.LCSEnabled = val;
+                        //    if (rank != null) rank.Refresh(true);
+                        if (rank != null) rank.UIRefresh(UIRefresh_Patch.lastUIUpdatedUID);
                     };
         component4.onValueChanged.AddListener(value);
         component.text = "LCS".ToUpper();
@@ -87,10 +88,10 @@ public class ToggleManager
         DCSToggle.GetComponent<OnActivate>().enabled = false;
         DCSToggle.GetComponent<VariableBehaviour>().enabled = false;
         component4.group = null;
-        component4.SetIsOnWithoutNotify(PrefferenceManager.DCSEnabled);
+        component4.SetIsOnWithoutNotify(PrefferenceManager.OCSEnabled);
         System.Action<bool> value = delegate (bool val)
         {
-            PrefferenceManager.DCSEnabled = val;
+            PrefferenceManager.OCSEnabled = val;
             if (rank != null) rank.UIRefresh(UIRefresh_Patch.lastUIUpdatedUID);
         };
         component4.onValueChanged.AddListener(value);

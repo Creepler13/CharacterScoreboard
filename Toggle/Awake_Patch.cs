@@ -10,7 +10,7 @@ internal class Awake_Patch
     {
         ToggleManager.stage = __instance;
 
-        if (PrefferenceManager.CSEnabled)
+        if (PrefferenceManager.LCSEnabled)
         {
             ToggleManager.Characterscoreboard_On();
         }
