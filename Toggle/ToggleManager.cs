@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class ToggleManager
 {
-    public static GameObject Toggle;
+    public static GameObject LCSToggle;
 
-    public static GameObject DCSToggle;
+    public static GameObject OCSToggle;
 
     public static GameObject vSelect;
 
@@ -16,43 +16,43 @@ public class ToggleManager
 
     public static PnlRank rank;
 
-    public static bool CharacterScoreboard;
+    public static bool LCS;
 
     public static void Characterscoreboard_On()
     {
-        ToggleManager.CharacterScoreboard = true;
+        ToggleManager.LCS = true;
     }
 
     public static void Characterscoreboard_Off()
     {
-        ToggleManager.CharacterScoreboard = false;
+        ToggleManager.LCS = false;
     }
 
-    public static bool DCS;
+    public static bool OCS;
 
     public static void DCS_On()
     {
-        ToggleManager.DCS = true;
+        ToggleManager.OCS = true;
     }
 
     public static void DCS_Off()
     {
-        ToggleManager.DCS = false;
+        ToggleManager.OCS = false;
     }
 
     public static void SetupCharacterScoreboardToggle()
     {
-        Toggle.name = "CharacterScoreboard";
-        UnityEngine.UI.Text component = Toggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
-        Image component2 = Toggle.transform.Find("Background").GetComponent<Image>();
-        Image component3 = Toggle.transform.Find("Background").GetChild(0).GetComponent<Image>();
-        Toggle component4 = Toggle.GetComponent<Toggle>();
-        Toggle.transform.position = new Vector3(-5f, 1.2f, 100f);
-        Toggle.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
-        Toggle.GetComponent<OnToggle>().enabled = false;
-        Toggle.GetComponent<OnToggleOn>().enabled = false;
-        Toggle.GetComponent<OnActivate>().enabled = false;
-        Toggle.GetComponent<VariableBehaviour>().enabled = false;
+        LCSToggle.name = "CharacterScoreboard";
+        UnityEngine.UI.Text component = LCSToggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
+        Image component2 = LCSToggle.transform.Find("Background").GetComponent<Image>();
+        Image component3 = LCSToggle.transform.Find("Background").GetChild(0).GetComponent<Image>();
+        Toggle component4 = LCSToggle.GetComponent<Toggle>();
+        LCSToggle.transform.position = new Vector3(-4f, 1.2f, 100f);
+        LCSToggle.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+        LCSToggle.GetComponent<OnToggle>().enabled = false;
+        LCSToggle.GetComponent<OnToggleOn>().enabled = false;
+        LCSToggle.GetComponent<OnActivate>().enabled = false;
+        LCSToggle.GetComponent<VariableBehaviour>().enabled = false;
         component4.group = null;
         component4.SetIsOnWithoutNotify(PrefferenceManager.LCSEnabled);
         System.Action<bool> value = delegate (bool val)
@@ -76,17 +76,17 @@ public class ToggleManager
 
     public static void SetupDCSToggle()
     {
-        DCSToggle.name = "OCS";
-        UnityEngine.UI.Text component = DCSToggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
-        Image component2 = DCSToggle.transform.Find("Background").GetComponent<Image>();
-        Image component3 = DCSToggle.transform.Find("Background").GetChild(0).GetComponent<Image>();
-        Toggle component4 = DCSToggle.GetComponent<Toggle>();
-        DCSToggle.transform.position = new Vector3(-6.5f, 1.2f, 100f);
-        DCSToggle.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
-        DCSToggle.GetComponent<OnToggle>().enabled = false;
-        DCSToggle.GetComponent<OnToggleOn>().enabled = false;
-        DCSToggle.GetComponent<OnActivate>().enabled = false;
-        DCSToggle.GetComponent<VariableBehaviour>().enabled = false;
+        OCSToggle.name = "OCS";
+        UnityEngine.UI.Text component = OCSToggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
+        Image component2 = OCSToggle.transform.Find("Background").GetComponent<Image>();
+        Image component3 = OCSToggle.transform.Find("Background").GetChild(0).GetComponent<Image>();
+        Toggle component4 = OCSToggle.GetComponent<Toggle>();
+        OCSToggle.transform.position = new Vector3(-5.5f, 1.2f, 100f);
+        OCSToggle.transform.localScale = new Vector3(0.6f, 0.6f, 1f);
+        OCSToggle.GetComponent<OnToggle>().enabled = false;
+        OCSToggle.GetComponent<OnToggleOn>().enabled = false;
+        OCSToggle.GetComponent<OnActivate>().enabled = false;
+        OCSToggle.GetComponent<VariableBehaviour>().enabled = false;
         component4.group = null;
         component4.SetIsOnWithoutNotify(PrefferenceManager.OCSEnabled);
         System.Action<bool> value = delegate (bool val)

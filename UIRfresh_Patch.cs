@@ -19,17 +19,17 @@ internal static class UIRefresh_Patch
     private static void Postfix(PnlRank __instance, string uid)
     {
 
+        fixToggle();
+
         lastUIUpdatedUID = uid;
 
         if (PrefferenceManager.LCSEnabled)
-        {
             upDatedScoreboardLCS(__instance, uid);
-            
-        }
+
         else if (PrefferenceManager.OCSEnabled)
             upDatedScoreboardOCS(__instance, uid);
 
-       
+
     }
 
     private static void upDatedScoreboardLCS(PnlRank __instance, string uid)
@@ -119,13 +119,30 @@ internal static class UIRefresh_Patch
     }
 
 
-    /**
+    public static void fixToggle()
+    {
+        if(ToggleManager.OCSToggle)
+        {
+            UnityEngine.UI.Text component = ToggleManager.OCSToggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
+            component.text = "OCS".ToUpper();
+        }
+
+        if (ToggleManager.LCSToggle)
+        {
+            UnityEngine.UI.Text component = ToggleManager.LCSToggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
+            component.text = "LCS".ToUpper();
+        }
+
+
+    }
+
+    /*
     public static Dictionary<string, string> refreshedAfterChange = new Dictionary<string, string>();
 
     [HarmonyPrefix]
     private static bool Prefix(string uid)
     {
-        if (refreshedAfterChange.ContainsKey(uid) || uid == null) return true;
+        if (refreshedAfterChange.ContainsKey(uid) || uid == null || !PrefferenceManager.LCSEnabled) return true;
 
         if (ToggleManager.rank != null)
         {
@@ -135,6 +152,7 @@ internal static class UIRefresh_Patch
         }
 
         return true;
+
     }
     */
 }
