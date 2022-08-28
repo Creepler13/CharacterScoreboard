@@ -3,7 +3,7 @@ using MelonLoader;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: MelonInfo(typeof(MyMod), "CharacterScoreboard", "1.1.0", "Creepler13", null)]
+[assembly: MelonInfo(typeof(MyMod), "CharacterScoreboard", "1.2.1", "Creepler13", null)]
 [assembly: MelonGame("PeroPeroGames", "MuseDash")]
 
 // General Information about an assembly is controlled through the following 

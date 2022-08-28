@@ -11,6 +11,5 @@ namespace CharacterScoreboard
             PrefferenceManager.Load();
         }
 
-
     }
 }

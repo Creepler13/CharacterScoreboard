@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Database;
+using Assets.Scripts.PeroTools.Commons;
 using Assets.Scripts.UI.Controls;
 using Assets.Scripts.UI.Panels;
 using CharacterScoreboard;
@@ -11,45 +12,137 @@ internal static class UIRefresh_Patch
 {
     public static string lastUIUpdatedUID;
 
+    public static Dictionary<string, RankCell[][]> scorebaordData = new Dictionary<string, RankCell[][]>();
+    public static Dictionary<string, bool> tainted = new Dictionary<string, bool>();
+
     [HarmonyPostfix, HarmonyPriority(Priority.Last)]
     private static void Postfix(PnlRank __instance, string uid)
     {
+
+        fixToggle();
+
         lastUIUpdatedUID = uid;
 
-        if (PrefferenceManager.CSEnabled)
-        {
-            __instance.txtServerName.text = DBUtils.getCharacterNameByIndex(DataHelper.selectedRoleIndex) + " & " + DBUtils.getElfinNameByIndex(DataHelper.selectedElfinIndex);
-        }
-        else
-        {
-            if (PrefferenceManager.DCSEnabled)
-                if (__instance.m_Ranks.entries.Count > 0 && __instance.m_Ranks.ContainsKey(uid))
-                {
+        if (PrefferenceManager.LCSEnabled)
+            upDatedScoreboardLCS(__instance, uid);
 
-                    JArray ranks = __instance.m_Ranks[uid].Cast<JArray>();
+        else if (PrefferenceManager.OCSEnabled)
+            upDatedScoreboardOCS(__instance, uid);
 
-                    RankCell[] cells = __instance.scrollView.GetComponentsInChildren<RankCell>();
-
-                    if (ranks.Count > 0 && cells.Length > 0)
-                        for (int index = 0; index < ranks.Count; index++)
-                        {
-                            JObject data = ranks[index].Cast<JObject>();
-                            string newNick = DBUtils.getCharacterNameByIndex(int.Parse((string)data["play"]["character_uid"])) + " & " + DBUtils.getElfinNameByIndex(int.Parse((string)data["play"]["elfin_uid"]));
-                            cells[index].SetValue(index + 1, newNick, (int)data["play"]["score"], (float)data["play"]["acc"] / 100);
-                        }
-
-                }
-
-        }
 
     }
 
+    private static void upDatedScoreboardLCS(PnlRank __instance, string uid)
+    {
+        RankCell[] cells = __instance.scrollView.GetComponentsInChildren<RankCell>();
+        JObject runs = Registry.getStage(uid.Split('_')[0], int.Parse(uid.Split('_')[1]));
+        Il2CppSystem.Collections.Generic.List<string> keysT = JsonUtils.Keys(runs);
+        Il2CppSystem.Collections.Generic.List<string> keys = new Il2CppSystem.Collections.Generic.List<string>();
+        foreach (string key in keysT)
+        {
+            int i = 0;
+            for (i = 0; i < keys.Count; i++)
+            {
+                if ((float)runs[key]["score"] > (float)runs[keysT[i]]["score"])
+                    break;
+            }
+            keys.Insert(i, key);
+        }
+
+        for (int index = 0; index < cells.Length; index++)
+        {
+
+            if (index > keys.Count - 1)
+            {
+                cells[index].txtNumber.text = " ";
+                cells[index].txtAcc.text = " ";
+                cells[index].txtPlayerName.text = " ";
+                cells[index].txtScore.text = " ";
+                continue;
+            }
+
+            string key = keys[index];
+
+            JObject run = runs[key].Cast<JObject>();
+
+            string name = DBUtils.getCharacterElfinNameByIds(key);
+
+            float acc;
+            if (!float.TryParse(run["acc"].ToString(), out acc))
+                continue;
+
+            int score;
+            if (!int.TryParse(run["score"].ToString(), out score))
+                continue;
+
+            cells[index].SetValue(index + 1, name, score, acc / 100);
+
+        }
+
+
+        __instance.txtServerName.text = DBUtils.getCharacterElfinNameByIds(DataHelper.selectedRoleIndex + "&" + DataHelper.selectedElfinIndex);
+    }
+
+    private static void upDatedScoreboardOCS(PnlRank __instance, string uid)
+    {
+        if (__instance.m_Ranks.entries.Count > 0 && __instance.m_Ranks.ContainsKey(uid))
+        {
+
+            JArray ranks = __instance.m_Ranks[uid].Cast<JArray>();
+
+            RankCell[] cells = __instance.scrollView.GetComponentsInChildren<RankCell>();
+
+            int smallerCount = ranks.Count > cells.Length ? cells.Length : ranks.Count;
+
+            if (ranks.Count > 0 && cells.Length > 0)
+                for (int index = 0; index < (smallerCount > 100 ? 100 : smallerCount); index++)
+                {
+                    JObject data = ranks[index].Cast<JObject>();
+
+                    string newNick = DBUtils.getCharacterElfinNameByIds(data["play"]["character_uid"].ToString() + "&" + data["play"]["elfin_uid"].ToString());
+
+                    float acc;
+                    if (!float.TryParse(data["play"]["acc"].ToString(), out acc))
+                        continue;
+
+                    int score;
+                    if (!int.TryParse(data["play"]["score"].ToString(), out score))
+                        continue;
+
+
+                    cells[index].SetValue(index + 1, newNick, score, acc / 100);
+                }
+
+        }
+        __instance.txtServerName.text = DBUtils.getCharacterElfinNameByIds(DataHelper.selectedRoleIndex + "&" + DataHelper.selectedElfinIndex);
+
+    }
+
+
+    public static void fixToggle()
+    {
+        if(ToggleManager.OCSToggle)
+        {
+            UnityEngine.UI.Text component = ToggleManager.OCSToggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
+            component.text = "OCS".ToUpper();
+        }
+
+        if (ToggleManager.LCSToggle)
+        {
+            UnityEngine.UI.Text component = ToggleManager.LCSToggle.transform.Find("Txt").GetComponent<UnityEngine.UI.Text>();
+            component.text = "LCS".ToUpper();
+        }
+
+
+    }
+
+    /*
     public static Dictionary<string, string> refreshedAfterChange = new Dictionary<string, string>();
 
     [HarmonyPrefix]
     private static bool Prefix(string uid)
     {
-        if (refreshedAfterChange.ContainsKey(uid)) return true;
+        if (refreshedAfterChange.ContainsKey(uid) || uid == null || !PrefferenceManager.LCSEnabled) return true;
 
         if (ToggleManager.rank != null)
         {
@@ -59,6 +152,8 @@ internal static class UIRefresh_Patch
         }
 
         return true;
+
     }
+    */
 }
 
