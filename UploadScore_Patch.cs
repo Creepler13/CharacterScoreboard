@@ -7,7 +7,7 @@ using Il2CppNewtonsoft.Json.Linq;
 internal static class UploadScore_Patch
 {
     [HarmonyPrefix]
-    private static void Prefix(string musicUid, int musicDifficulty, string characterUid, string elfinUid, int hp, int score, float acc, int combo, string evaluate, int miss, JArray beats, string bmsVersion, Il2CppSystem.Action<int> callback)
+    private static void Prefix(string musicUid, int musicDifficulty, string characterUid, string elfinUid,  int score, float acc)
     {
         Registry.saveRun(musicUid, musicDifficulty, characterUid, elfinUid, score, acc);
     }
