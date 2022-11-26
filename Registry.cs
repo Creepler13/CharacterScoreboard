@@ -32,14 +32,14 @@ namespace CharacterScoreboard
                 if ((float)stage[key]["score"] < score)
                 {
                     stage[key]["score"] = score;
-                    stage[key]["acc"] = acc;
+                    stage[key]["acc"] = (JToken)acc;
                 }
             }
             else
             {
                 stage[key] = new JObject();
                 stage[key]["score"] = score;
-                stage[key]["acc"] = acc;
+                stage[key]["acc"] = (JToken)acc;
             }
 
             saveStage(musicUid, musicDifficulty, stage);
