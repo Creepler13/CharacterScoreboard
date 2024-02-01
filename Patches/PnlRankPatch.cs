@@ -29,7 +29,7 @@ internal static class PnlRankPatch
 
     private static void UpdateScoreboard(string uid)
     {
-        if (!Rank.m_Ranks.ContainsKey(uid))
+        if (!Rank.m_Ranks.ContainsKey(uid) || !Rank.m_Ranks[uid].HasValues)
         {
             return;
         }
