@@ -1,0 +1,10 @@
+global using HarmonyLib;
+global using Il2CppAssets.Scripts.UI.Panels;
+global using MelonLoader;
+global using Tomlet;
+global using UnityEngine;
+global using static CharacterScoreboard.MelonBuildInfo;
+global using static CharacterScoreboard.Save;
+global using static CharacterScoreboard.ToggleManager;
+global using static CharacterScoreboard.Utils;
+global using Object = UnityEngine.Object;
